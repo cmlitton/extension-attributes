@@ -1,0 +1,15 @@
+#!/bin/bash
+
+
+fvStatus=$(fdesetup status | awk '/FileVault is/{print $3}' | tr -d .)
+
+#echo "<result>$fvStatus</result>"
+
+if [[ "$fvStatus" == "Off" ]]; then
+	jamf displayMessage -message "You need to turn on FileVault"
+	open "jamfselfservice://content?entity=policy&id=6&action=view"
+	else
+		jamf recon
+		jamf manage
+		
+fi
