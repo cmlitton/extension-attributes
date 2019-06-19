@@ -1,5 +1,5 @@
 #!/bin/bash
 
-diskType=$(diskutil info '/' | awk '/(Bundle)/ {print $3}')
+diskTypeTest=$(diskutil info '/' | awk '/(Bundle)/ {print $3}')
 
-echo "<result>"$diskType"</result>"
+echo "<result>"$diskTypeTest"</result>"
