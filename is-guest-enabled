@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# create attribute to see if guest user is enabled
+
+guestAccountEnabled=$(defaults read /Library/Preferences/com.apple.loginwindow.plist GuestEnabled)
+
+# echo $guestAccountEnabled
+
+if [[ "$guestAccountEnabled" -eq 0 ]];
+	then
+		guestAccountEnabled="Disabled"
+	else
+		guestAccountEnabled="Enabled"
+fi
+
+echo "<result>$guestAccountEnabled</result>"
+
