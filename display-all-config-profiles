@@ -1,0 +1,19 @@
+# from @treger
+
+#!/bin/sh
+
+# Displays all configuration profiles installed
+
+profiles=`profiles -C -v | awk -F: '/attribute: name/{print $NF}'| sort | sed -e 's/^[ \t]*//'`
+
+if [[ ! -z "$profiles" ]]; then
+
+    echo "<result>$profiles</result>"
+
+else
+
+    echo "<result>Not Installed</result>"
+
+fi
+
+exit 0
