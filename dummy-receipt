@@ -1,0 +1,11 @@
+from @admacodega
+
+# When the computer first comes into Jamf you could do 
+# `defaults write /Library/Preferences/org.myorg.machineDetails.plist completedsetup -string "No"`
+# and then
+
+#!/bin/bash
+
+setupstatus="$(defaults read /Library/Preferences/org.myorg.machineDetails.plist completedsetup)"
+
+/bin/echo "<result>$setupstatus</result>"
