@@ -1,0 +1,48 @@
+# from @yohan
+
+#!/usr/bin/python
+#
+# Author: Johan McGwire - Yohan @ Macadmins Slack - Johan@McGwire.tech
+#
+# Description: This extension attribute checks all the preferences linked to the System Preferences Software Update pane in Mojave. Reporting
+# 			   true if the "Automatically keep my Mac up to date" setting is fully enabled, reporting false otherwise.
+
+# Prepping and setting up for the script
+import os
+import subprocess
+checkList=[]
+
+# Function that calls the defaults command and returns the result of the defaults read command. 
+def defaultsCheck(settingDomain, setting, expectedValue):
+	try:
+		with open(os.devnull, 'w') as devnull:
+			return (subprocess.check_output(["defaults", "read", settingDomain, setting], stderr=devnull) == expectedValue)
+	except subprocess.CalledProcessError:
+		return False
+
+# System Preferences: Check for updates
+checkList.append({"Address":"/Library/Preferences/com.apple.SoftwareUpdate.plist", "Setting":"AutomaticCheckEnabled", "Expected":"1\n"})
+
+# System Preferences: Download new updates when available
+checkList.append({"Address":"/Library/Preferences/com.apple.SoftwareUpdate.plist", "Setting":"AutomaticDownload", "Expected":"1\n"})
+
+# System Preferences: Install system data files and security updates
+checkList.append({"Address":"/Library/Preferences/com.apple.SoftwareUpdate.plist", "Setting":"CriticalUpdateInstall", "Expected":"1\n"})
+checkList.append({"Address":"/Library/Preferences/com.apple.SoftwareUpdate.plist", "Setting":"ConfigDataInstall", "Expected":"1\n"})
+
+# System Preferences: Install macOS Updates
+checkList.append({"Address":"/Library/Preferences/com.apple.SoftwareUpdate.plist", "Setting":"AutomaticallyInstallMacOSUpdates", "Expected":"1\n"})
+
+# System Preferences: Install App Updates from the App Store & Automatically keep my Mac up to date
+checkList.append({"Address":"/Library/Preferences/com.apple.commerce.plist", "Setting":"AutoUpdate", "Expected":"1\n"})
+
+# Iterates through the checkList running a check on each setting
+for check in checkList:
+	if not (defaultsCheck(check["Address"], check["Setting"], check["Expected"])):
+
+		# A setting failed the expected, returning false to JAMF
+		print "<result>false</result>"
+		exit(0)
+
+# All settings check completed with their expected values
+print "<result>true</result>"
