@@ -1,0 +1,13 @@
+#!/bin/bash
+
+update=$(defaults read /Library/Preferences/com.apple.SoftwareUpdate.plist CriticalUpdateInstall)
+
+if [[ "$update" -eq 1 ]]; then
+		status="On"
+else
+		status="Off"
+fi
+
+echo "<result>$status</result>"
+
+exit 0 
