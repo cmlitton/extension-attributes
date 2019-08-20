@@ -5,7 +5,7 @@ osvers_minor=$(sw_vers -productVersion | awk -F. '{print $2}')
 
 ERROR=0
 
-# Checks to see if the OS on the Mac is 10.x.x. If it is not, the 
+# Checks to see if the OS on the Mac is 10.x.x. If it is not, the
 # following message is displayed without quotes:
 #
 # "Unknown Version Of macOS"
@@ -29,29 +29,29 @@ if [[ ${osvers_major} -eq 10 ]] && [[ ${osvers_minor} -ge 13 ]]; then
 # boot drive is formatted with APFS or HFS+
 
 boot_filesystem_check=$(/usr/sbin/diskutil info / | awk '/Type \(Bundle\)/ {print $3}')
-  
+
 # If the drive is formatted with APFS, the fdesetup tool will
 # be available and is able to display the encryption status.
 
   if [[ "$boot_filesystem_check" = "apfs" ]]; then
 
-    # If encrypted, the following message is 
+    # If encrypted, the following message is
     # displayed without quotes:
     # "FileVault is On."
     #
-    # If encrypting, the following message is 
+    # If encrypting, the following message is
     # displayed without quotes:
     # "Encryption in progress:"
     # How much has been encrypted of of the total
     # amount of space is also displayed.
     #
-    # If decrypting, the following message is 
+    # If decrypting, the following message is
     # displayed without quotes:
     # "Decryption in progress:"
     # How much has been decrypted of of the total
     # amount of space is also displayed
     #
-    # If not encrypted, the following message is 
+    # If not encrypted, the following message is
     # displayed without quotes:
     # "FileVault is Off."
 
@@ -67,5 +67,5 @@ boot_filesystem_check=$(/usr/sbin/diskutil info / | awk '/Type \(Bundle\)/ {prin
       echo "<result>Unable to display encryption status for filesystems other than APFS.</result>"
   fi
 fi
-  
+
 exit $ERROR
